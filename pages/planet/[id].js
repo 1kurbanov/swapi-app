@@ -1,18 +1,19 @@
-import ElementsProperty from '../../components/ElementsProperty'
+import {getData} from '../../api/api'
 import {MainLayout} from '../../components/MainLayout'
 
 export default function Planet({planet}) {
-  const infoPlanet = Object.keys(planet).map((key, indexKey) => {
+  const infoPlanet = planet.map((obj, indexObj) => {
+    const [objKeyValue] = Object.entries(obj)
     return (
       <>
-        <tr>
-          <td>{key}</td>
+        <tr key={indexObj}>
+          <th>{objKeyValue[0]}</th>
           <td>
-            {Array.isArray(planet[key])
-              ? planet[key].map((el, i) => {
-                  return <ElementsProperty strQuery={el} />
+            {Array.isArray(objKeyValue[1])
+              ? objKeyValue[1].map((el) => {
+                  return <p>{el}</p>
                 })
-              : planet[key]}
+              : objKeyValue[1]}
           </td>
         </tr>
       </>
@@ -21,7 +22,14 @@ export default function Planet({planet}) {
 
   return (
     <MainLayout>
-      <table class='table'>
+      <table className='table table-striped table-bordered caption-top'>
+        <caption>List of planets</caption>
+        <thead>
+          <tr>
+            <th scope='col'>Key</th>
+            <th scope='col'>Value</th>
+          </tr>
+        </thead>
         <tbody>{infoPlanet}</tbody>
       </table>
     </MainLayout>
@@ -29,7 +37,6 @@ export default function Planet({planet}) {
 }
 
 export async function getServerSideProps({query}) {
-  const res = await fetch(`https://swapi.dev/api/planets/${query.id}`)
-  const planet = await res.json()
+  const planet = await getData(`https://swapi.dev/api/planets/${query.id}`)
   return {props: {planet}}
 }
