@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import {getPlanetName} from '../api/api'
 import {MainLayout} from '../components/MainLayout'
 
 export default function Planets({planets}) {
@@ -6,10 +7,10 @@ export default function Planets({planets}) {
     <MainLayout>
       <h3>Planet List</h3>
       <nav className='nav flex-column'>
-        {planets.results.map((planet, index) => {
+        {planets.map((planet, index) => {
           return (
             <Link key={index + 1} href={`/planet/${index + 1}`}>
-              <a className='nav-link'>{planet.name}</a>
+              <a className='nav-link'>{planet}</a>
             </Link>
           )
         })}
@@ -19,7 +20,6 @@ export default function Planets({planets}) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(`https://swapi.dev/api/planets`)
-  const planets = await res.json()
+  const planets = await getPlanetName(`https://swapi.dev/api/planets`)
   return {props: {planets}}
 }
