@@ -6,15 +6,25 @@ export default function Planets({planets}) {
   return (
     <MainLayout>
       <h3>Planet List</h3>
-      <nav className='nav flex-column'>
-        {planets.map((planet, index) => {
-          return (
-            <Link key={index + 1} href={`/planet/${index + 1}`}>
-              <a className='nav-link'>{planet}</a>
-            </Link>
-          )
-        })}
-      </nav>
+      {planets ? (
+        <nav className='nav flex-column'>
+          {planets.map((planet, index) => {
+            return (
+              <Link key={index + 1} href={`/planet/${index + 1}`}>
+                <a className='nav-link'>{planet}</a>
+              </Link>
+            )
+          })}
+        </nav>
+      ) : (
+        <div class='d-flex align-items-center'>
+          <strong>Loading...</strong>
+          <div
+            class='spinner-border ms-auto'
+            role='status'
+            aria-hidden='true'></div>
+        </div>
+      )}
     </MainLayout>
   )
 }
