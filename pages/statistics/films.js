@@ -1,19 +1,19 @@
-import {getAllResults} from '../../api/api'
 import {MainLayout} from '../../components/MainLayout'
-import {StatisticLayout} from '../../components/StatisticLayout'
+import StatisticsMenu from '../../components/StatisticsMenu'
+import {getAllResults, getRoot} from '../../api/api'
 import Table from '../../components/Table'
 
-export default function Films({films}) {
+export default function Films({films, root}) {
   return (
     <MainLayout>
-      <StatisticLayout>
-        <Table table={films} />
-      </StatisticLayout>
+      <StatisticsMenu root={root} />
+      <Table table={films} />
     </MainLayout>
   )
 }
 
 export async function getServerSideProps() {
   const films = await getAllResults(`https://swapi.dev/api/films`)
-  return {props: {films}}
+  const root = await getRoot(`https://swapi.dev/api/`)
+  return {props: {films, root}}
 }

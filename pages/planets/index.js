@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import {getPlanetName} from '../api/api'
-import {MainLayout} from '../components/MainLayout'
+import {getElementName} from '../../api/api'
+import {MainLayout} from '../../components/MainLayout'
 
 export default function Planets({planets}) {
   return (
@@ -12,7 +12,7 @@ export default function Planets({planets}) {
       <nav className='nav flex-column'>
         {planets.map((planet, index) => {
           return (
-            <Link key={index + 1} href={`/planet/${index + 1}`}>
+            <Link key={index + 1} href={`/planets/${index + 1}`}>
               <a className='nav-link d-flex justify-content-center'>{planet}</a>
             </Link>
           )
@@ -23,6 +23,6 @@ export default function Planets({planets}) {
 }
 
 export async function getServerSideProps() {
-  const planets = await getPlanetName(`https://swapi.dev/api/planets`)
+  const planets = await getElementName(`https://swapi.dev/api/planets`)
   return {props: {planets}}
 }

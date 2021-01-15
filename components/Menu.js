@@ -9,17 +9,7 @@ export function Menu() {
           <Link href='/'>
             <a className='navbar-brand'>The Star Wars API</a>
           </Link>
-          <button
-            className='navbar-toggler'
-            type='button'
-            data-bs-toggle='collapse'
-            data-bs-target='#navbarNav'
-            aria-controls='navbarNav'
-            aria-expanded='false'
-            aria-label='Toggle navigation'>
-            <span className='navbar-toggler-icon'></span>
-          </button>
-          <div className='collapse navbar-collapse justify-content-end'>
+          <div className='justify-content-end'>
             <div className='navbar-nav'>
               <Link href='/planets'>
                 <a

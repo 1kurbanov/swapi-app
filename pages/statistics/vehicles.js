@@ -1,19 +1,19 @@
-import {getAllResults} from '../../api/api'
 import {MainLayout} from '../../components/MainLayout'
-import {StatisticLayout} from '../../components/StatisticLayout'
+import StatisticsMenu from '../../components/StatisticsMenu'
+import {getAllResults, getRoot} from '../../api/api'
 import Table from '../../components/Table'
 
-export default function Vehicles({vehicles}) {
+export default function Vehicles({vehicles, root}) {
   return (
     <MainLayout>
-      <StatisticLayout>
-        <Table table={vehicles} />
-      </StatisticLayout>
+      <StatisticsMenu root={root} />
+      <Table table={vehicles} />
     </MainLayout>
   )
 }
 
 export async function getServerSideProps() {
   const vehicles = await getAllResults(`https://swapi.dev/api/vehicles`)
-  return {props: {vehicles}}
+  const root = await getRoot(`https://swapi.dev/api/`)
+  return {props: {vehicles, root}}
 }

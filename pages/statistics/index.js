@@ -1,10 +1,16 @@
 import {MainLayout} from '../../components/MainLayout'
-import {StatisticLayout} from '../../components/StatisticLayout'
+import {getRoot} from '../../api/api'
+import StatisticsMenu from '../../components/StatisticsMenu'
 
-export default function Statistics() {
+export default function Statistics({root}) {
   return (
     <MainLayout>
-      <StatisticLayout />
+      <StatisticsMenu root={root} />
     </MainLayout>
   )
+}
+
+export async function getServerSideProps() {
+  const root = await getRoot(`https://swapi.dev/api/`)
+  return {props: {root}}
 }

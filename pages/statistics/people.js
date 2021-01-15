@@ -1,19 +1,22 @@
-import {getAllResults} from '../../api/api'
+import React from 'react'
 import {MainLayout} from '../../components/MainLayout'
-import {StatisticLayout} from '../../components/StatisticLayout'
+import StatisticsMenu from '../../components/StatisticsMenu'
+import {getAllResults, getRoot} from '../../api/api'
 import Table from '../../components/Table'
 
-export default function People({people}) {
+function People({people, root}) {
   return (
     <MainLayout>
-      <StatisticLayout>
-        <Table table={people} />
-      </StatisticLayout>
+      <StatisticsMenu root={root} />
+      <Table table={people} />
     </MainLayout>
   )
 }
 
+export default React.memo(People)
+
 export async function getServerSideProps() {
   const people = await getAllResults(`https://swapi.dev/api/people`)
-  return {props: {people}}
+  const root = await getRoot(`https://swapi.dev/api/`)
+  return {props: {people, root}}
 }
