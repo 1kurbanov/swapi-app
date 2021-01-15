@@ -11,6 +11,10 @@ export default function Statistics({root}) {
 }
 
 export async function getServerSideProps() {
-  const root = await getRoot(`https://swapi.dev/api/`)
-  return {props: {root}}
+  try {
+    const root = await getRoot(`https://swapi.dev/api/`)
+    return {props: {root}}
+  } catch (error) {
+    console.warn(error)
+  }
 }

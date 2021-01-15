@@ -13,7 +13,11 @@ export default function Planets({planets, root}) {
 }
 
 export async function getServerSideProps() {
-  const planets = await getAllResults(`https://swapi.dev/api/planets`)
-  const root = await getRoot(`https://swapi.dev/api/`)
-  return {props: {planets, root}}
+  try {
+    const planets = await getAllResults(`https://swapi.dev/api/planets`)
+    const root = await getRoot(`https://swapi.dev/api/`)
+    return {props: {planets, root}}
+  } catch (error) {
+    console.warn(error)
+  }
 }

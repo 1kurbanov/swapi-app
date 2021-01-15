@@ -13,7 +13,11 @@ export default function Films({films, root}) {
 }
 
 export async function getServerSideProps() {
-  const films = await getAllResults(`https://swapi.dev/api/films`)
-  const root = await getRoot(`https://swapi.dev/api/`)
-  return {props: {films, root}}
+  try {
+    const films = await getAllResults(`https://swapi.dev/api/films`)
+    const root = await getRoot(`https://swapi.dev/api/`)
+    return {props: {films, root}}
+  } catch (error) {
+    console.warn(error)
+  }
 }

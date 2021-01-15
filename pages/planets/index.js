@@ -23,6 +23,10 @@ export default function Planets({planets}) {
 }
 
 export async function getServerSideProps() {
-  const planets = await getElementName(`https://swapi.dev/api/planets`)
-  return {props: {planets}}
+  try {
+    const planets = await getElementName(`https://swapi.dev/api/planets`)
+    return {props: {planets}}
+  } catch (error) {
+    console.warn(error)
+  }
 }

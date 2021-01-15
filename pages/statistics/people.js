@@ -16,7 +16,11 @@ function People({people, root}) {
 export default React.memo(People)
 
 export async function getServerSideProps() {
-  const people = await getAllResults(`https://swapi.dev/api/people`)
-  const root = await getRoot(`https://swapi.dev/api/`)
-  return {props: {people, root}}
+  try {
+    const people = await getAllResults(`https://swapi.dev/api/people`)
+    const root = await getRoot(`https://swapi.dev/api/`)
+    return {props: {people, root}}
+  } catch (error) {
+    console.warn(error)
+  }
 }

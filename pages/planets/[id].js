@@ -25,8 +25,12 @@ export default function Planet({planet}) {
 }
 
 export async function getServerSideProps({query}) {
-  const planet = await getElementResurse(
-    `https://swapi.dev/api/planets/${query.id}`
-  )
-  return {props: {planet}}
+  try {
+    const planet = await getElementResurse(
+      `https://swapi.dev/api/planets/${query.id}`
+    )
+    return {props: {planet}}
+  } catch (error) {
+    console.warn(error)
+  }
 }

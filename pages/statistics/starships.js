@@ -13,7 +13,12 @@ export default function Starships({starships, root}) {
 }
 
 export async function getServerSideProps() {
-  const starships = await getAllResults(`https://swapi.dev/api/starships`)
-  const root = await getRoot(`https://swapi.dev/api/`)
-  return {props: {starships, root}}
+  try {
+    try {
+    } catch (error) {
+      console.warn(error)
+    }
+  } catch (error) {
+    console.warn(error)
+  }
 }

@@ -13,7 +13,11 @@ export default function Species({species, root}) {
 }
 
 export async function getServerSideProps() {
-  const species = await getAllResults(`https://swapi.dev/api/species`)
-  const root = await getRoot(`https://swapi.dev/api/`)
-  return {props: {species, root}}
+  try {
+    const species = await getAllResults(`https://swapi.dev/api/species`)
+    const root = await getRoot(`https://swapi.dev/api/`)
+    return {props: {species, root}}
+  } catch (error) {
+    console.warn(error)
+  }
 }

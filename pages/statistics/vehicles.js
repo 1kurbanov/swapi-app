@@ -13,7 +13,11 @@ export default function Vehicles({vehicles, root}) {
 }
 
 export async function getServerSideProps() {
-  const vehicles = await getAllResults(`https://swapi.dev/api/vehicles`)
-  const root = await getRoot(`https://swapi.dev/api/`)
-  return {props: {vehicles, root}}
+  try {
+    const vehicles = await getAllResults(`https://swapi.dev/api/vehicles`)
+    const root = await getRoot(`https://swapi.dev/api/`)
+    return {props: {vehicles, root}}
+  } catch (error) {
+    console.warn(error)
+  }
 }
