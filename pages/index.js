@@ -5,8 +5,11 @@ export default function Home() {
     <MainLayout>
       <div className='d-flex justify-content-center flex-column w-75 m-auto pt-4'>
         <h4>
-          Приложение, использующее The Star Wars API https://swapi.dev/, cостоит
-          из двух разделов:
+          Приложение, использующее{' '}
+          <a href='https://swapi.dev/' target='_blank'>
+            The Star Wars API
+          </a>
+          , cостоит из двух разделов:
         </h4>
         <ul>
           <li>
