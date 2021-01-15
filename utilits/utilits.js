@@ -18,6 +18,11 @@ export function lastStringRoute() {
   return useRouter().route.slice(useRouter().route.lastIndexOf('/') + 1)
 }
 
+// Получение подстроки после последнего в строке URL символа '/'
+export function getIdUrl(url) {
+  return url.match(/\/\d*\/$/)[0]
+}
+
 // Проверка на строки на соответствие URL
 export function isUrl(url) {
   return /http[s]*\:\/\/swapi.dev\/api\/.*/i.test(url)

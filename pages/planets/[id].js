@@ -6,7 +6,7 @@ export default function Planet({planet}) {
   return (
     <MainLayout>
       <h3 className='d-flex justify-content-center color-primary'>
-        Information about a planet
+        Information about a planet {planet.name}
       </h3>
 
       <table className='table table-striped table-bordered'>
@@ -29,6 +29,7 @@ export async function getServerSideProps({query}) {
     const planet = await getElementResurse(
       `https://swapi.dev/api/planets/${query.id}`
     )
+
     return {props: {planet}}
   } catch (error) {
     console.warn(error)

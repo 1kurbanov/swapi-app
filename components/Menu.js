@@ -11,7 +11,7 @@ export function Menu() {
           </Link>
           <div className='justify-content-end'>
             <div className='navbar-nav'>
-              <Link href='/planets'>
+              <Link href='/planets?page=1'>
                 <a
                   className={`nav-link ${activeRoute(`/planet[s]*`)}`}
                   aria-current='page'>

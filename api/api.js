@@ -5,66 +5,54 @@ export async function getElementResurse(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)
     const data = await res.json()
-    return getData(data)
+    return await getData(data, getElementName)
   } catch (error) {
     console.warn(error)
   }
 }
 
-// Получение данных обо всех элементах ресурса
+// Получение данных обо всех элементах одной страницы ресурса
 export async function getAllResults(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)
-    const {results} = await res.json()
-    return Promise.all(
-      results.map(async (result) => {
-        return getData(result)
-      })
-    )
+    const data = await res.json()
+    return await getData(data, getElement)
   } catch (error) {
     console.warn(error)
   }
 }
 
-// Получение данных
-// Формат данных на выходе: [{key: value}..., {key: [name or title]}... ]
-function getData(data) {
-  const result = Object.keys(data).map(async (key) => {
-    if (Array.isArray(data[key])) {
-      const urls = data[key].map(async (el) => {
-        return isUrl(el) ? await getElementName(el) : el
-      })
-      return {[key]: await Promise.all(urls)}
+async function getData(data, callback) {
+  const result = {...data}
+  const dataArray = Object.keys(data)
+  for (let i = 0; i < dataArray.length; i++) {
+    if (Array.isArray(data[dataArray[i]])) {
+      result[dataArray[i]] = await Promise.all(
+        data[dataArray[i]].map(async (value) => {
+          return isUrl(value) ? await callback(value) : value
+        })
+      )
     }
-    if (isUrl(data[key]) && key !== 'url') {
-      return {[key]: await getElementName(data[key])}
-    }
-    return {[key]: data[key]}
-  })
-
-  return Promise.all(result)
+  }
+  return result
 }
 
-// Получение названия элемента
 export async function getElementName(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)
-    const data = await res.json()
-    const result = data.results
-      ? data.results.map(({name, title}) => name || title)
-      : data.name || data.title
-    return result || null
+    const data = (await res.json()) || {}
+    return data.name || data.title
   } catch (error) {
     console.warn(error)
   }
 }
 
 // Получение всех ресурсов
-export async function getRoot(ENDPOINT) {
+export async function getElement(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)
     const data = (await res.json()) || {}
-    return await Object.keys(data).map((el) => [el, data[el]])
+    return data
   } catch (error) {
     console.warn(error)
   }

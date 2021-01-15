@@ -1,24 +1,24 @@
 import React from 'react'
 import {MainLayout} from '../../components/MainLayout'
 import StatisticsMenu from '../../components/StatisticsMenu'
-import {getAllResults, getRoot} from '../../api/api'
+import {getAllResults, getElement} from '../../api/api'
+import Pagination from '../../components/Pagination'
 import Table from '../../components/Table'
 
-function People({people, root}) {
+export default function People({people, root}) {
   return (
     <MainLayout>
       <StatisticsMenu root={root} />
+      <Pagination count={people.count} resurse={'people'} />
       <Table table={people} />
     </MainLayout>
   )
 }
 
-export default React.memo(People)
-
 export async function getServerSideProps() {
   try {
     const people = await getAllResults(`https://swapi.dev/api/people`)
-    const root = await getRoot(`https://swapi.dev/api/`)
+    const root = await getElement(`https://swapi.dev/api/`)
     return {props: {people, root}}
   } catch (error) {
     console.warn(error)

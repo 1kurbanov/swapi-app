@@ -1,16 +1,11 @@
-import {useRouter} from 'next/router'
 import RowsTable from './RowsTable'
 
 export default function Table({table}) {
-  const lastStringRoute = () => {
-    return useRouter().route.slice(useRouter().route.lastIndexOf('/') + 1)
-  }
-
-  return table.map((el, index) => {
+  return table.results.map((el, index) => {
     return (
       <div key={index + 1}>
         <h3 className='d-flex justify-content-center color-primary'>
-          {`Information about a ${lastStringRoute()} ${index + 1}`}
+          {`Information about a ${el.name || el.title}`}
         </h3>
         <table className='table table-striped table-bordered table-sm'>
           <thead>
