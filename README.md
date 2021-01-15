@@ -1,4 +1,4 @@
-# Приложение, использующее The Star Wars API https://swapi.dev/
+## Приложение, использующее The Star Wars API https://swapi.dev/
 
 ### Cостоит из двух разделов:
 
@@ -7,4 +7,4 @@
 
 ### Для UI использован Bootstrap
 
-### Развернуто на Netlify:
+### Развернуто на Netlify: https://ecstatic-wescoff-5f30ec.netlify.app
