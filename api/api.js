@@ -1,53 +1,24 @@
-export async function getData(ENDPOINT) {
-  const data = await getAllAttributes(ENDPOINT)
-  return data
-}
+import {isUrl} from '../utilits/utilits'
 
-async function getAllAttributes(ENDPOINT) {
+// Получение данных об отдельном элементе ресурса
+export async function getElementResurse(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)
     const data = await res.json()
-    const result = Object.keys(data).map(async (key) => {
-      if (Array.isArray(data[key])) {
-        const urls = data[key].map(async (el) => {
-          return isUrl(el) ? await getNameOrTitle(el) : el
-        })
-        return {[key]: await Promise.all(urls)}
-      }
-      if (isUrl(data[key]) && key !== 'url') {
-        return {[key]: await getNameOrTitle(data[key])}
-      }
-      return {[key]: data[key]}
-    })
-    return Promise.all(result)
+    return getData(data)
   } catch (error) {
     console.warn(error)
   }
 }
 
-function isUrl(url) {
-  return /http[s]*\:\/\/swapi.dev\/api\/.*/i.test(url)
-}
-
+// Получение данных обо всех элементах ресурса
 export async function getAllResults(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)
     const {results} = await res.json()
     return Promise.all(
       results.map(async (result) => {
-        const data = Object.keys(result).map(async (key) => {
-          if (Array.isArray(result[key])) {
-            const urls = result[key].map(async (el) => {
-              return isUrl(el) ? await getNameOrTitle(el) : el
-            })
-            return {[key]: await Promise.all(urls)}
-          }
-          if (isUrl(result[key]) && key !== 'url') {
-            return {[key]: await getNameOrTitle(result[key])}
-          }
-          return {[key]: result[key]}
-        })
-        return Promise.all(data)
+        return getData(result)
       })
     )
   } catch (error) {
@@ -55,26 +26,45 @@ export async function getAllResults(ENDPOINT) {
   }
 }
 
-export async function getPlanetName(ENDPOINT) {
-  const res = await fetch(ENDPOINT)
-  const data = await res.json()
-  const result = data.results.map(({name, title}) => name || title)
-  return result || null
+// Получение данных
+// Формат данных на выходе: [{key: value}..., {key: [name or title]}... ]
+function getData(data) {
+  const result = Object.keys(data).map(async (key) => {
+    if (Array.isArray(data[key])) {
+      const urls = data[key].map(async (el) => {
+        return isUrl(el) ? await getElementName(el) : el
+      })
+      return {[key]: await Promise.all(urls)}
+    }
+    if (isUrl(data[key]) && key !== 'url') {
+      return {[key]: await getElementName(data[key])}
+    }
+    return {[key]: data[key]}
+  })
+
+  return Promise.all(result)
 }
 
-async function getNameOrTitle(ENDPOINT) {
-  const res = await fetch(ENDPOINT)
-  const data = await res.json()
-  return data['title'] || data['name'] || ''
-}
-
-export async function getStatistic(ENDPOINT) {
+// Получение названия элемента
+export async function getElementName(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)
     const data = await res.json()
-    const result = Object.keys(data).map((el) => [el, data[el]])
+    const result = data.results
+      ? data.results.map(({name, title}) => name || title)
+      : data.name || data.title
+    return result || null
+  } catch (error) {
+    console.warn(error)
+  }
+}
 
-    return result
+// Получение всех ресурсов
+export async function getRoot(ENDPOINT) {
+  try {
+    const res = await fetch(ENDPOINT)
+    const data = (await res.json()) || {}
+    return await Object.keys(data).map((el) => [el, data[el]])
   } catch (error) {
     console.warn(error)
   }

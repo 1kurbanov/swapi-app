@@ -1,19 +1,19 @@
-import {getAllResults} from '../../api/api'
 import {MainLayout} from '../../components/MainLayout'
-import {StatisticLayout} from '../../components/StatisticLayout'
+import StatisticsMenu from '../../components/StatisticsMenu'
+import {getAllResults, getRoot} from '../../api/api'
 import Table from '../../components/Table'
 
-export default function Starships({starships}) {
+export default function Starships({starships, root}) {
   return (
     <MainLayout>
-      <StatisticLayout>
-        <Table table={starships} />
-      </StatisticLayout>
+      <StatisticsMenu root={root} />
+      <Table table={starships} />
     </MainLayout>
   )
 }
 
 export async function getServerSideProps() {
   const starships = await getAllResults(`https://swapi.dev/api/starships`)
-  return {props: {starships}}
+  const root = await getRoot(`https://swapi.dev/api/`)
+  return {props: {starships, root}}
 }

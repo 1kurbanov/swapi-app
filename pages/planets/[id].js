@@ -1,4 +1,4 @@
-import {getData} from '../../api/api'
+import {getElementResurse} from '../../api/api'
 import {MainLayout} from '../../components/MainLayout'
 import RowsTable from '../../components/RowsTable'
 
@@ -25,6 +25,8 @@ export default function Planet({planet}) {
 }
 
 export async function getServerSideProps({query}) {
-  const planet = await getData(`https://swapi.dev/api/planets/${query.id}`)
+  const planet = await getElementResurse(
+    `https://swapi.dev/api/planets/${query.id}`
+  )
   return {props: {planet}}
 }

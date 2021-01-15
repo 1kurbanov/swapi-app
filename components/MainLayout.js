@@ -5,7 +5,7 @@ export function MainLayout({children}) {
   return (
     <>
       <Head>
-        <title>My page title</title>
+        <title>The Star Wars API</title>
       </Head>
       <div className='container'>
         <header>
