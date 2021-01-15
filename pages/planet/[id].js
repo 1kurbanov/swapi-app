@@ -1,36 +1,24 @@
 import {getData} from '../../api/api'
 import {MainLayout} from '../../components/MainLayout'
+import RowsTable from '../../components/RowsTable'
 
 export default function Planet({planet}) {
-  const infoPlanet = planet.map((obj, indexObj) => {
-    const [objKeyValue] = Object.entries(obj)
-    return (
-      <>
-        <tr key={indexObj}>
-          <th>{objKeyValue[0]}</th>
-          <td>
-            {Array.isArray(objKeyValue[1])
-              ? objKeyValue[1].map((el) => {
-                  return <p>{el}</p>
-                })
-              : objKeyValue[1]}
-          </td>
-        </tr>
-      </>
-    )
-  })
-
   return (
     <MainLayout>
-      <table className='table table-striped table-bordered caption-top'>
-        <caption>List of planets</caption>
+      <h3 className='d-flex justify-content-center color-primary'>
+        Information about a planet
+      </h3>
+
+      <table className='table table-striped table-bordered'>
         <thead>
           <tr>
-            <th scope='col'>Key</th>
-            <th scope='col'>Value</th>
+            <th scope='col'>KEY</th>
+            <th scope='col'>VALUE</th>
           </tr>
         </thead>
-        <tbody>{infoPlanet}</tbody>
+        <tbody>
+          <RowsTable table={planet} />
+        </tbody>
       </table>
     </MainLayout>
   )

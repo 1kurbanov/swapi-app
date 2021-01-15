@@ -1,3 +1,4 @@
+import React from 'react'
 import Link from 'next/link'
 import {getPlanetName} from '../api/api'
 import {MainLayout} from '../components/MainLayout'
@@ -5,26 +6,18 @@ import {MainLayout} from '../components/MainLayout'
 export default function Planets({planets}) {
   return (
     <MainLayout>
-      <h3>Planet List</h3>
-      {planets ? (
-        <nav className='nav flex-column'>
-          {planets.map((planet, index) => {
-            return (
-              <Link key={index + 1} href={`/planet/${index + 1}`}>
-                <a className='nav-link'>{planet}</a>
-              </Link>
-            )
-          })}
-        </nav>
-      ) : (
-        <div class='d-flex align-items-center'>
-          <strong>Loading...</strong>
-          <div
-            class='spinner-border ms-auto'
-            role='status'
-            aria-hidden='true'></div>
-        </div>
-      )}
+      <h3 className='d-flex justify-content-center color-primary'>
+        Planet List
+      </h3>
+      <nav className='nav flex-column'>
+        {planets.map((planet, index) => {
+          return (
+            <Link key={index + 1} href={`/planet/${index + 1}`}>
+              <a className='nav-link d-flex justify-content-center'>{planet}</a>
+            </Link>
+          )
+        })}
+      </nav>
     </MainLayout>
   )
 }
