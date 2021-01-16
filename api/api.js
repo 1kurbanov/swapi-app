@@ -68,3 +68,22 @@ export async function getElement(ENDPOINT) {
     console.warn(error)
   }
 }
+
+// Получение ресурсов
+export async function getRoot(ENDPOINT) {
+  try {
+    const res = await fetch(ENDPOINT)
+    const data = await res.json()
+    return Promise.all(
+      Object.keys(data).map(async (resurse) => {
+        const root = await getElement(ENDPOINT + resurse + '/')
+        return {
+          name: resurse,
+          count: root.count
+        }
+      })
+    )
+  } catch (error) {
+    console.warn(error)
+  }
+}
