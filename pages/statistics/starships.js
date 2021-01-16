@@ -5,7 +5,6 @@ import Pagination from '../../components/Pagination'
 import Table from '../../components/Table'
 
 export default function Starships({starships, root}) {
-  console.log(starships)
   return (
     <MainLayout>
       <StatisticsMenu root={root} />
@@ -15,9 +14,12 @@ export default function Starships({starships, root}) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({query}) {
   try {
-    const starships = await getAllResults(`https://swapi.dev/api/starships`)
+    const page = query.page || 1
+    const starships = await getAllResults(
+      `https://swapi.dev/api/starships?page=${page}`
+    )
     const root = await getElement(`https://swapi.dev/api/`)
     return {props: {starships, root}}
   } catch (error) {

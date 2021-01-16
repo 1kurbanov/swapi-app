@@ -8,15 +8,18 @@ export default function Vehicles({vehicles, root}) {
   return (
     <MainLayout>
       <StatisticsMenu root={root} />
-      <Pagination count={vehicles.count} resurse={'vehicles'} />
+      <Pagination count={vehicles.count} />
       <Table table={vehicles} />
     </MainLayout>
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({query}) {
   try {
-    const vehicles = await getAllResults(`https://swapi.dev/api/vehicles`)
+    const page = query.page || 1
+    const vehicles = await getAllResults(
+      `https://swapi.dev/api/vehicles?page=${page}`
+    )
     const root = await getElement(`https://swapi.dev/api/`)
     return {props: {vehicles, root}}
   } catch (error) {

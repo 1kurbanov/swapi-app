@@ -16,12 +16,18 @@ export async function getAllResults(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)
     const data = await res.json()
-    return await getData(data, getElement)
+    data.results = await Promise.all(
+      data.results.map(async (el) => {
+        return await getData(el, getElementName)
+      })
+    )
+    return data
   } catch (error) {
     console.warn(error)
   }
 }
 
+// Получение данных обо всех элементах c массива
 async function getData(data, callback) {
   const result = {...data}
   const dataArray = Object.keys(data)
@@ -32,11 +38,16 @@ async function getData(data, callback) {
           return isUrl(value) ? await callback(value) : value
         })
       )
+    } else {
+      if (isUrl(data[dataArray[i]]) && dataArray[i] !== 'url') {
+        result[dataArray[i]] = await callback(data[dataArray[i]])
+      }
     }
   }
-  return result
+  return await result
 }
 
+// Получение названия элемента
 export async function getElementName(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)
@@ -47,7 +58,7 @@ export async function getElementName(ENDPOINT) {
   }
 }
 
-// Получение всех ресурсов
+// Получение элемента
 export async function getElement(ENDPOINT) {
   try {
     const res = await fetch(ENDPOINT)

@@ -8,15 +8,18 @@ export default function Films({films, root}) {
   return (
     <MainLayout>
       <StatisticsMenu root={root} />
-      <Pagination count={films.count} resurse={'films'} />
+      <Pagination count={films.count} />
       <Table table={films} />
     </MainLayout>
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({query}) {
   try {
-    const films = await getAllResults(`https://swapi.dev/api/films`)
+    const page = query.page || 1
+    const films = await getAllResults(
+      `https://swapi.dev/api/films?page=${page}`
+    )
     const root = await getElement(`https://swapi.dev/api/`)
     return {props: {films, root}}
   } catch (error) {

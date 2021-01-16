@@ -8,15 +8,18 @@ export default function Species({species, root}) {
   return (
     <MainLayout>
       <StatisticsMenu root={root} />
-      <Pagination count={species.count} resurse={'species'} />
+      <Pagination count={species.count} />
       <Table table={species} />
     </MainLayout>
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({query}) {
   try {
-    const species = await getAllResults(`https://swapi.dev/api/species`)
+    const page = query.page || 1
+    const species = await getAllResults(
+      `https://swapi.dev/api/species?page=${page}`
+    )
     const root = await getElement(`https://swapi.dev/api/`)
     return {props: {species, root}}
   } catch (error) {
