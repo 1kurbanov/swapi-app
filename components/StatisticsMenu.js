@@ -7,9 +7,9 @@ export default function StatisticsMenu({root}) {
     <>
       {root ? (
         <nav className='nav nav-tabs justify-content-end'>
-          {root.map(([key], index) => {
+          {Object.keys(root).map((key, index) => {
             return (
-              <Link key={index} href={`/statistics/${key}`}>
+              <Link key={index} href={`/statistics/${key}?page=1`}>
                 <a className={`nav-link ${activeRoute(`/statistics/${key}`)}`}>
                   {key.toUpperCase()}
                 </a>
